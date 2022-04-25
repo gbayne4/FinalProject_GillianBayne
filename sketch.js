@@ -1,19 +1,23 @@
-//initially started in 3D - going to try 2D but I'm having some trouble getting it to work
 
-let moveX, moveY, moveZ;
-let resetJump = 0;
+var littleMan;
+var trees;
+let moveX, moveY;
+
 function setup() {
-  createCanvas(windowWidth, windowHeight, WEBGL);
-	moveY = 20
-	moveX = windowWidth/10
-	moveZ = 0
+	createCanvas(windowWidth, windowHeight);
+	moveX = width/2;
+	moveY = height/2;
+	background(100);
+	trees = new Group();
 }
 
 function draw() {
-	camera(moveX, moveY,moveZ - 600)
-  background(100);
+	littleMan = createSprite(moveX, moveY, 50, 100);
 	
-		if (keyIsDown(LEFT_ARROW)) {
+	littleMan.velocity.x = (camera.mouseX-littleMan.position.x)/20;
+  littleMan.velocity.y = (camera.mouseY-littleMan.position.y)/20;
+	
+	if (keyIsDown(LEFT_ARROW)) {
     moveX += 2;
   }
 
@@ -22,28 +26,14 @@ function draw() {
   }
 
   if (keyIsDown(UP_ARROW)) {
-    moveZ -= 2;
+    moveY -= 2;
   }
 
   if (keyIsDown(DOWN_ARROW)) {
-    moveZ += 2;
-  }
-/*
-	if (keyPressed(32)) {
     moveY += 2;
   }
-*/
 
-  fill(255);
-  stroke(0);
-  push();
-  translate(moveX, moveY, moveZ);
-  sphere(50);
-  pop();
+	
+	camera.position.x = littleMan.position.x;
+	camera.position.y = littleMan.position.y;
 }
-/*
-function keyPressed(){
-	if (keyCode === 32) {
-		moveY -= 2
-}}
-*/
