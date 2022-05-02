@@ -1,4 +1,5 @@
 let divider = 2;
+let sunsize = 1;
 var littleMan; //main character
 var tTrees
 var sTrees; //background
@@ -7,9 +8,10 @@ let moveX, moveY;
 var SCENE_W = 5000; //scene barrier width
 var SCENE_H = 5000; //scene barrier height
 var sunPiece1,sunPiece2,sunPiece1,sunPiece3,sunPiece4,sunPiece5,sunPiece6,sunPiece7,sunPiece8,sunPiece9,sunPiece10;
+let pieceVis_1 = true, pieceVis_2 = true, pieceVis_3 = true, pieceVis_4 = true, pieceVis_5 = true, pieceVis_6 = true, pieceVis_7 = true, pieceVis_8 = true,pieceVis_9 = true,pieceVis_10 = true;
 
 function setup() {
-	colorMode(HSB,190,100,100);
+	colorMode(HSB,190,100,1000);
 	createCanvas(windowWidth, windowHeight);
 	moveX = width/2;
 	moveY = height/2;
@@ -24,11 +26,12 @@ for(var i = 0; i<100; i++) {
 	puddle.add(water);
 }
 //create player
+colorMode(HSB,190,100,10);
 littleMan = createSprite(width/2, height/2, 40, 40);
 littleMan.setCollider('circle', -10, 2, 20)
 	
 	
-	
+colorMode(HSB,190,100,1000);	
 //generate trees in background
 for(var i = 0; i<600; i++) {
 var shortTrees = createSprite(random(-width, SCENE_W+width), random(-height, SCENE_H+height), 40,70);
@@ -41,7 +44,7 @@ var tallTrees = createSprite(random(-width, SCENE_W+width), random(-height, SCEN
 	tTrees.immovable = true;
 	tTrees.add(tallTrees); 
 }
-
+colorMode(HSB,3000,100,10);
 	//considered making these a group but wanted more control
 	//sun pieces that'll be collected
 		sunPiece1 = createSprite(random(-width/2 + 50, SCENE_W - 50), random(-height/2 + 50, SCENE_H - 50), 10,10);
@@ -64,13 +67,20 @@ var tallTrees = createSprite(random(-width, SCENE_W+width), random(-height, SCEN
 	sunPiece9.setCollider('circle', 0, 5, 5)
 		sunPiece10 = createSprite(random(-width/2 + 50,  SCENE_W - 50), random(-height/2 + 50, SCENE_H - 50), 10,10);
 	sunPiece10.setCollider('circle', 0, 5, 5)
+	
+	sun = createSprite(width/2, height/2, 10, 10)
 }
 
 function draw() {
+	colorMode(HSB,190,100,1000);
 	background(15,30,127);
 	//set littleMans motion
 		littleMan.velocity.x = (moveX-littleMan.position.x)/divider;
 		littleMan.velocity.y = (moveY-littleMan.position.y)/divider;
+		
+	sun.position.x = littleMan.position.x;
+	sun.position.y = littleMan.position.y;
+	sun.scale = sunsize
 	
 	if (littleMan.overlap(puddle) == true){
 			divider = 200
@@ -81,46 +91,58 @@ function draw() {
 			divider = 2
 		}}
 	
+
 	
-	if (littleMan.overlap(sunPiece1) == true){
-		sunPiece1.position.x = littleMan.position.x
-		sunPiece1.position.y = littleMan.position.y
+	
+	if (littleMan.overlap(sunPiece1) == true && pieceVis_1 == true){
+		sunPiece1.removed = true
+		pieceVis_1 = false
+		sunsize += .2
 	}
-		if (littleMan.overlap(sunPiece2) == true){
-		sunPiece2.position.x = littleMan.position.x
-		sunPiece2.position.y = littleMan.position.y
+		if (littleMan.overlap(sunPiece2) == true && pieceVis_2 == true){
+		sunPiece2.removed = true
+		pieceVis_2 = false
+		sunsize += .2
 	}
-		if (littleMan.overlap(sunPiece3) == true){
-		sunPiece3.position.x = littleMan.position.x
-		sunPiece3.position.y = littleMan.position.y
+		if (littleMan.overlap(sunPiece3) == true && pieceVis_3 == true){
+		sunPiece3.removed = true
+		pieceVis_3 = false
+		sunsize += .2
 	}
-		if (littleMan.overlap(sunPiece4) == true){
-		sunPiece4.position.x = littleMan.position.x
-		sunPiece4.position.y = littleMan.position.y
+		if (littleMan.overlap(sunPiece4) == true && pieceVis_4 == true){
+		sunPiece4.removed = true
+		pieceVis_4 = false
+		sunsize += .2
 	}
-		if (littleMan.overlap(sunPiece5) == true){
-		sunPiece5.position.x = littleMan.position.x
-		sunPiece5.position.y = littleMan.position.y
+		if (littleMan.overlap(sunPiece5) == true && pieceVis_5 == true){
+		sunPiece5.removed = true
+		pieceVis_5 = false
+		sunsize += .2
 	}
-		if (littleMan.overlap(sunPiece6) == true){
-		sunPiece6.position.x = littleMan.position.x
-		sunPiece6.position.y = littleMan.position.y
+		if (littleMan.overlap(sunPiece6) == true && pieceVis_6 == true){
+		sunPiece6.removed = true
+		pieceVis_6 = false
+		sunsize += .2
 	}
-		if (littleMan.overlap(sunPiece7) == true){
-		sunPiece7.position.x = littleMan.position.x
-		sunPiece7.position.y = littleMan.position.y
+		if (littleMan.overlap(sunPiece7) == true && pieceVis_7 == true){
+		sunPiece7.removed = true
+		pieceVis_7 = false
+		sunsize += .2
 	}
-		if (littleMan.overlap(sunPiece8) == true){
-		sunPiece8.position.x = littleMan.position.x
-		sunPiece8.position.y = littleMan.position.y
+		if (littleMan.overlap(sunPiece8) == true && pieceVis_8 == true){
+		sunPiece8.removed = true
+		pieceVis_8 = false
+		sunsize += .2
 	}
-			if (littleMan.overlap(sunPiece9) == true){
-		sunPiece9.position.x = littleMan.position.x
-		sunPiece9.position.y = littleMan.position.y
+			if (littleMan.overlap(sunPiece9) == true && pieceVis_9 == true){
+		sunPiece9.removed = true
+		pieceVis_9 = false
+		sunsize += .2
 	}
-		if (littleMan.overlap(sunPiece10) == true){
-		sunPiece10.position.x = littleMan.position.x
-		sunPiece10.position.y = littleMan.position.y
+		if (littleMan.overlap(sunPiece10) == true && pieceVis_10 == true){
+		sunPiece10.removed = true
+		pieceVis_10 = false
+		sunsize += .2
 	}
 	
 /*
@@ -155,16 +177,22 @@ function draw() {
 	//littleMan bounces off trees when he collides
 	littleMan.collide(sTrees);
 	littleMan.collide(tTrees);
+	sun.collide(sTrees);
+	sun.collide(tTrees);
 	
 	//keeps littleMan within the game
 	if(littleMan.position.x < -width/2)
-    littleMan.position.x = -width/2;
+		littleMan.position.x = -width/2;
+		//sun.position.x = -width/2;
   if(littleMan.position.y < -height/2)
     littleMan.position.y = -height/2;
+		//sun.position.y = -height/2;
   if(littleMan.position.x > SCENE_W)
     littleMan.position.x = SCENE_W;
+		//sun.position.x = SCENE_W;
   if(littleMan.position.y > SCENE_H)
     littleMan.position.y = SCENE_H;
+		//sun.position.y = SCENE_H;
 	
 //camera following the player	
 	camera.position.x = littleMan.position.x;
