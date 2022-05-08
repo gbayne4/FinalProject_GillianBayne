@@ -1,6 +1,5 @@
-
 let divider = 2;
-let sunsize = 1;
+let sunsize = .02;
 var littleMan; //main character
 var tTrees
 var sTrees; //background
@@ -12,8 +11,13 @@ var SCENE_H = 3000; //scene barrier height
 var sunPiece1,sunPiece2,sunPiece1,sunPiece3,sunPiece4,sunPiece5,sunPiece6,sunPiece7,sunPiece8,sunPiece9,sunPiece10;
 let pieceVis_1 = true, pieceVis_2 = true, pieceVis_3 = true, pieceVis_4 = true, pieceVis_5 = true, pieceVis_6 = true, pieceVis_7 = true, pieceVis_8 = true,pieceVis_9 = true,pieceVis_10 = true;
 let light_sizex = 100, light_sizey = 100;
+let o1 = 150, o2 = 150, o3 = 150, o4 = 150, o5 = 150, o6 = 150, o7 = 150, o8 = 150, o9 = 150, o10 = 150;
+let stick_posx = -15, stick_posy = -30;
+let count = 0 ;
+let reduce = true;
 
 function preload(){
+	font = loadFont('font/font0.ttf');
 	shortTree_img = loadImage('images/shorttree.PNG')
 	bigTree_img = loadImage('images/bigtree.PNG')
 	water_img = loadImage('images/water.PNG')
@@ -24,6 +28,7 @@ function preload(){
 	left_walk1 = loadImage('images/littleMan_left1.PNG')
 	//sun_back_img = loadImage('sun_back.PNG')
 }
+
 
 function setup() {
 	//colorMode(HSB,190,100,1000);
@@ -44,18 +49,19 @@ for(var i = 0; i<50; i++) {
 	var water = createSprite(random(-width-SCENE_W, SCENE_W+width), random(-height-SCENE_W , SCENE_H+height), 150,150);
 	water.addImage(water_img)
 	water.scale = .5
+	water.setCollider('rectangle', 0, 0,170,170)
 	puddle.add(water);
 }
 //create player
 //colorMode(HSB,190,100,10);
 littleMan = createSprite(width/2, height/2, 40, 40);
 	littleMan.scale = .3
-	littleMan.addAnimation('up', 'images/littleMan_up2.PNG','images/littleMan_up0.PNG','images/littleMan_up1.PNG')
-	littleMan.addAnimation('down', 'images/littleMan_down2.PNG','images/littleMan_down0.PNG','images/littleMan_down1.PNG')
-	littleMan.addAnimation('still','images/littleMan_down0.PNG')
+	littleMan.addAnimation('up', 'littleMan_up2.PNG','littleMan_up0.PNG','littleMan_up1.PNG')
+	littleMan.addAnimation('down', 'littleMan_down2.PNG','littleMan_down0.PNG','littleMan_down1.PNG')
+	littleMan.addAnimation('still','littleMan_down0.PNG')
 		littleMan.addAnimation('right', right_walk0,right_walk1)
 	littleMan.addAnimation('left', left_walk0,left_walk1)
-littleMan.setCollider('circle', -10, 2, 20)
+littleMan.setCollider('circle', 0, 0, 50)
 	
 	
 //colorMode(HSB,190,100,1000);	
@@ -64,14 +70,14 @@ for(var i = 0; i<400; i++) {
 var shortTrees = createSprite(random(-width, SCENE_W+width), random(-height, SCENE_H+height), 40,70);
 	shortTrees.addImage(shortTree_img)
 	shortTrees.scale = .2
-	shortTrees.setCollider('rectangle',  0, 0, 40,100); //makes trees collidable
+	shortTrees.setCollider('rectangle',  0, 0, 50,120); //makes trees collidable
 	sTrees.add(shortTrees); 
 	sTrees.immovable = true;
 	
 var tallTrees = createSprite(random(-width, SCENE_W+width), random(-height, SCENE_H+height), 40,110);
 	tallTrees.addImage(bigTree_img)
 	tallTrees.scale = .4
-	tallTrees.setCollider('rectangle',  0, 0, 30,110); //makes trees collidable
+	tallTrees.setCollider('rectangle',  0, 0, 50,150); //makes trees collidable
 	tTrees.immovable = true;
 	tTrees.add(tallTrees); 
 }
@@ -79,88 +85,107 @@ var tallTrees = createSprite(random(-width, SCENE_W+width), random(-height, SCEN
 	//considered making these a group but wanted more control
 	//sun pieces that'll be collected
 	sunPiece1 = createSprite(random(-width/2 + 50, SCENE_W - 50), random(-height/2 + 50, SCENE_H - 50), 10,10);
-	fill(225,255,211,150)	
-	ellipse(sunPiece1.position.x,sunPiece1.position.y,100,100)	
 	sunPiece1.addImage(miniflame_img)
 		sunPiece1.scale = .03
 	sunPiece1.setCollider('circle', 0, 5, 5)
 
-	sunPiece2 = createSprite(random(-width/2 + 50, SCENE_W - 50), random(-height/2 + 50, SCENE_H - 50), 10,10);
-	fill(225,255,211,150)	
-	ellipse(sunPiece2.position.x,sunPiece2.position.y,100,100)	
+	sunPiece2 = createSprite(random(-width/2 + 50, SCENE_W - 50), random(-height/2 + 50, SCENE_H - 50), 10,10);	
 	sunPiece2.addImage(miniflame_img)
 		sunPiece2.scale =.03
 	sunPiece2.setCollider('circle', 0, 5, 5)
 
-		sunPiece3 = createSprite(random(-width/2 + 50, SCENE_W - 50), random(-height/2 + 50, SCENE_H - 50), 10,10);
-	fill(225,255,211,150)	
-	ellipse(sunPiece3.position.x,sunPiece3.position.y,100,100)		
+		sunPiece3 = createSprite(random(-width/2 + 50, SCENE_W - 50), random(-height/2 + 50, SCENE_H - 50), 10,10);		
 	sunPiece3.addImage(miniflame_img)
-		sunPiece3.scale =.03	
+		sunPiece3.scale =.03
 	sunPiece3.setCollider('circle', 0, 5, 5)
 	
 		sunPiece4 = createSprite(random(-width/2 + 50, SCENE_W - 50), random(-height/2 + 50, SCENE_H - 50), 10,10);
-	fill(225,255,211,150)	
-	ellipse(sunPiece4.position.x,sunPiece4.position.y,100,100)	
 	sunPiece4.addImage(miniflame_img)
 		sunPiece4.scale =.03
 	sunPiece4.setCollider('circle', 0, 5, 5)
 	
 		sunPiece5 = createSprite(random(-width/2 + 50, SCENE_W - 50), random(-height/2 + 50, SCENE_H - 50), 10,10);
-			fill(225,255,211,150);
-	ellipse(sunPiece5.position.x,sunPiece5.position.y,100,100);
 	sunPiece5.addImage(miniflame_img);
 		sunPiece5.scale = .03
 	sunPiece5.setCollider('circle', 0, 5, 5)
 	
-		sunPiece6 = createSprite(random(-width/2 + 50, SCENE_W - 50), random(-height/2 + 50, SCENE_H - 50), 10,10);
-				fill(225,255,211,150)	
-	ellipse(sunPiece6.position.x,sunPiece6.position.y,100,100)		
+		sunPiece6 = createSprite(random(-width/2 + 50, SCENE_W - 50), random(-height/2 + 50, SCENE_H - 50), 10,10);	
 	sunPiece6.addImage(miniflame_img)
 		sunPiece6.scale = .03
 	sunPiece6.setCollider('circle', 0, 5, 5)
 	
 		sunPiece7 = createSprite(random(-width/2 + 50, SCENE_W - 50), random(-height/2 + 50, SCENE_H - 50), 10,10);
-				fill(225,255,211,150)	
-	ellipse(sunPiece7.position.x,sunPiece7.position.y,100,100)	
 	sunPiece7.addImage(miniflame_img)
 		sunPiece7.scale = .03
 	sunPiece7.setCollider('circle', 0, 5, 5)
 	
 		sunPiece8 = createSprite(random(-width/2 + 50, SCENE_W - 50), random(-height/2 + 50, SCENE_H - 50), 10,10);
-				fill(225,255,211,150)	
-	ellipse(sunPiece8.position.x,sunPiece8.position.y,100,100)	
 	sunPiece8.addImage(miniflame_img)
 		sunPiece8.scale = .03
 	sunPiece8.setCollider('circle', 0, 5, 5)
 		
-	sunPiece9 = createSprite(random(-width/2 + 50, SCENE_W - 50), random(-height/2 + 50, SCENE_H - 50), 10,10);
-		fill(225,255,211,150)
-ellipse(sunPiece9.position.x,sunPiece9.position.y,100,100)	
+	sunPiece9 = createSprite(random(-width/2 + 50, SCENE_W - 50), random(-height/2 + 50, SCENE_H - 50), 10,10);	
 	sunPiece9.addImage(miniflame_img)
 		sunPiece9.scale = .03
 	sunPiece9.setCollider('circle', 0, 5, 5)
 	
 		sunPiece10 = createSprite(random(-width/2 + 50,  SCENE_W - 50), random(-height/2 + 50, SCENE_H - 50), 10,10);
-			fill(225,255,211,150)
-	ellipse(sunPiece10.position.x,sunPiece10.position.y,100,100)
 	sunPiece10.addImage(miniflame_img)
 		sunPiece10.scale = .03
 	sunPiece10.setCollider('circle', 0, 5, 5)
 	
 	sun = createSprite(width/2, height/2, 10, 10)
-		//	sun.addImage(miniflame_img)
-		//	sun.scale = .01
+		sun.addAnimation('sun',miniflame_img)
+		sun.scale = .01
 }
 
 function draw() {
-	//colorMode(HSB,190,100,1000);
 	background(0);
 	
-	sun.scale = .01
+	//the game will end after 240? we'll see having some testing
+	count += 1
+	
+	//circles that go around the mini sun pieces. The o's generate the fading effect
+	fill(225,255,211,o1)	
+	ellipse(sunPiece1.position.x,sunPiece1.position.y,120,120)
+	fill(225,255,211,o2)	
+	ellipse(sunPiece2.position.x,sunPiece2.position.y,120,120)
+	fill(225,255,211,o3)	
+	ellipse(sunPiece3.position.x,sunPiece3.position.y,120,120)
+	fill(225,255,211,o4)	
+	ellipse(sunPiece4.position.x,sunPiece4.position.y,120,120)
+	fill(225,255,211,o5)	
+	ellipse(sunPiece5.position.x,sunPiece5.position.y,120,120)
+	fill(225,255,211,o6)	
+	ellipse(sunPiece6.position.x,sunPiece6.position.y,120,120)
+	fill(225,255,211,o7)	
+	ellipse(sunPiece7.position.x,sunPiece7.position.y,120,120)
+	fill(225,255,211,o8)	
+	ellipse(sunPiece8.position.x,sunPiece8.position.y,120,120)
+	fill(225,255,211,o9)	
+	ellipse(sunPiece9.position.x,sunPiece9.position.y,120,120)
+	fill(225,255,211,o10)	
+	ellipse(sunPiece10.position.x,sunPiece10.position.y,120,120)
+	
+	
+	sun.changeAnimation('sun')
 		noStroke()
 fill(225,255,211,150)
-ellipse(littleMan.position.x,littleMan.position.y,light_sizex,light_sizey)
+//should I center it or have it lined up with the stick?
+ellipse(littleMan.position.x + stick_posx,littleMan.position.y + stick_posy,light_sizex,light_sizey)
+	
+		//subtracts current amount of light - currently not opperating as planed
+	console.log(count)
+	//console.log(light_sizex)
+	//console.log(light_sizey)
+		if ((count%100) == 0 && reduce == true && light_sizex > 0 && light_sizey > 0){
+				light_sizex -= 5 //would rather be smaller but for experimental purposes
+				light_sizey -= 5
+				sunsize -= .003
+				reduce = false
+			} if ((count%5) == 0){
+				reduce = true
+			}
 
 	//grass
 	/*
@@ -180,18 +205,18 @@ littleMan.velocity.y = (moveY-littleMan.position.y)/divider;
 sun.velocity.x = littleMan.velocity.x 
 sun.velocity.y = littleMan.velocity.y 
 
-sun.position.x = littleMan.position.x;
-sun.position.y = littleMan.position.y;
+sun.position.x = littleMan.position.x + stick_posx;
+sun.position.y = littleMan.position.y + stick_posy;
 sun.scale = sunsize
 
 	
- //making it glitchy
+ //making it glitchy - slow down when in water
 	if (littleMan.overlap(puddle) == true){
 			divider = 20
 		
 	}else{
 			divider -=1
-		if (divider<=2){
+		if (divider<=0){
 			divider = 2
 		}}
 
@@ -201,73 +226,95 @@ sun.scale = sunsize
 	if (littleMan.overlap(sunPiece1) == true && pieceVis_1 == true){
 		sunPiece1.removed = true
 		pieceVis_1 = false
-		sunsize += .2
-		light_sizex += 20
-		light_sizey += 20
+		sunsize += .015
+		light_sizex += 40
+		light_sizey += 40
+	}
+	if (pieceVis_1 == false){
+		o1 -= 5
 	}
 		if (littleMan.overlap(sunPiece2) == true && pieceVis_2 == true){
 		sunPiece2.removed = true
 		pieceVis_2 = false
-		sunsize += .2
-		light_sizex += 20
-		light_sizey += 20
+		sunsize += .015
+		light_sizex += 40
+		light_sizey += 40
+	}	if (pieceVis_2 == false){
+		o2 -= 5
 	}
 		if (littleMan.overlap(sunPiece3) == true && pieceVis_3 == true){
 		sunPiece3.removed = true
 		pieceVis_3 = false
-		sunsize += .2
-		light_sizex += 20
-		light_sizey += 20
+		sunsize += .015
+		light_sizex += 40
+		light_sizey += 40
+	}	if (pieceVis_3 == false){
+		o3 -= 5
 	}
 		if (littleMan.overlap(sunPiece4) == true && pieceVis_4 == true){
 		sunPiece4.removed = true
 		pieceVis_4 = false
-		sunsize += .2
-		light_sizex += 20
-		light_sizey += 20
+		sunsize += .015
+		light_sizex += 40
+		light_sizey += 40
+	}	if (pieceVis_4 == false){
+		o4 -= 5
 	}
 		if (littleMan.overlap(sunPiece5) == true && pieceVis_5 == true){
 		sunPiece5.removed = true
 		pieceVis_5 = false
-		sunsize += .2
-		light_sizex += 20
-		light_sizey += 20
+		sunsize += .015
+		light_sizex += 40
+		light_sizey += 40
+	}	if (pieceVis_5 == false){
+		o5 -= 5
 	}
 		if (littleMan.overlap(sunPiece6) == true && pieceVis_6 == true){
 		sunPiece6.removed = true
 		pieceVis_6 = false
-		sunsize += .2
-		light_sizex += 20
-		light_sizey += 20
+		sunsize += .015
+		light_sizex += 40
+		light_sizey += 40
+	}	if (pieceVis_6 == false){
+		o6 -= 5
 	}
 		if (littleMan.overlap(sunPiece7) == true && pieceVis_7 == true){
 		sunPiece7.removed = true
 		pieceVis_7 = false
-		sunsize += .2
-		light_sizex += 20
-		light_sizey += 20
+		sunsize += .015
+		light_sizex += 40
+		light_sizey += 40
+	}	if (pieceVis_7 == false){
+		o7 -= 5
 	}
 		if (littleMan.overlap(sunPiece8) == true && pieceVis_8 == true){
 		sunPiece8.removed = true
 		pieceVis_8 = false
-		sunsize += .2
-		light_sizex += 20
-		light_sizey += 20
+		sunsize += .015
+		light_sizex += 40
+		light_sizey += 40
+	}	if (pieceVis_8 == false){
+		o8 -= 5
 	}
 			if (littleMan.overlap(sunPiece9) == true && pieceVis_9 == true){
 		sunPiece9.removed = true
 		pieceVis_9 = false
-		sunsize += .2
-		light_sizex += 20
-		light_sizey += 20
+		sunsize += .015
+		light_sizex += 40
+		light_sizey += 40
+	}	if (pieceVis_9 == false){
+		o9 -= 5
 	}
 		if (littleMan.overlap(sunPiece10) == true && pieceVis_10 == true){
 		sunPiece10.removed = true
 		pieceVis_10 = false
-		sunsize += .2
-		light_sizex += 20
-		light_sizey += 20
+		sunsize += .015
+		light_sizex += 40
+		light_sizey += 40
+	}	if (pieceVis_10 == false){
+		o10 -= 5
 	}
+	
 	
 /*
 		if (littleMan.overlap(puddle) == true){
@@ -284,24 +331,35 @@ sun.scale = sunsize
 	if (keyDown(LEFT_ARROW)) {
     moveX -= 6; 
 		littleMan.changeAnimation('left')
+		stick_posx = 23
+		stick_posy = 2
   }
 
   else if (keyDown(RIGHT_ARROW)) {
     moveX  += 6;
 		littleMan.changeAnimation('right')
+		stick_posx = -20
+		stick_posy = 0
+		
   }
 
   else if (keyDown(UP_ARROW)) {
     moveY -= 6;
 		littleMan.changeAnimation('up')
+		stick_posx = 10
+		stick_posy = 10
   }
 
   else if (keyDown(DOWN_ARROW)) {
     moveY += 6;
 		littleMan.changeAnimation('down')
+		stick_posx = -12
+		stick_posy = -30
   }
 	else {
 		littleMan.changeAnimation('still')
+		stick_posx = -15
+		stick_posy = -30
 	}
 	
 	//keep trees as barriers - littleMan bounces off the trees lol
@@ -389,43 +447,19 @@ sun.scale = sunsize
 //camera following the player	
 	camera.position.x = littleMan.position.x;
 	camera.position.y = littleMan.position.y;
+	
+//game over sign 
+	if ((count > 3000) || light_sizex <= 0 || light_sizex <= 0){
+	textAlign(CENTER);
+  textFont(font, 150);
+	fill(255)
+	text('Game Over', littleMan.position.x , littleMan.position.y-100);
+	}
 
 tTrees.debug = mouseIsPressed;
 sTrees.debug = mouseIsPressed;
 littleMan.debug = mouseIsPressed;
 
-/*	
-loadPixels();
-	let rad = 90;
-	for (let y = 0; y < height; y++) {
-		for (let x = 0; x < width; x++) {
-			let pos = (x + y * width) * 4;
-			let r = pixels[pos];
-			let g = pixels[pos + 1];
-			let b = pixels[pos + 2];
 
-			let d = dist(x, y, mouseX, mouseY);
-
-
-			let adjustBrightness = map(d, 0, rad, 1, 0);
-			r *= adjustBrightness;
-			g *= adjustBrightness;
-			b *= adjustBrightness;
-
-
-			r = constrain(r, 0, 255);
-			g = constrain(g, 0, 255);
-			b = constrain(b, 0, 255);
-
-
-			pixels[pos] = r;
-			pixels[pos + 1] = g;
-			pixels[pos + 2] = b;
-			pixels[pos + 3] = 255;
-		}
-	}
-updatePixels();
-
-*/
 drawSprites();
 }
