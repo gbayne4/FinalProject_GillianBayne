@@ -44,7 +44,6 @@ function preload(){
 	up_2 = loadImage('images/littleMan_up0.PNG')
 	up_3 = loadImage('images/littleMan_up1.PNG')
 }
-
 function setup() {
 	//colorMode(HSB,190,100,1000);
 	createCanvas(windowWidth, windowHeight);
@@ -67,12 +66,7 @@ for(var i = 0; i<50; i++) {
 	water.setCollider('rectangle', 0, 0,450,450)
 	puddle.add(water);
 }
-//create player
-//colorMode(HSB,190,100,10);
 
-	
-	
-//colorMode(HSB,190,100,1000);	
 //generate trees in background
 for(var i = 0; i<400; i++) {
 var shortTrees = createSprite(random(-width, SCENE_W+width), random(-height, SCENE_H+height), 40,70);
@@ -197,7 +191,7 @@ fill(235,255,211,150)
 ellipse(littleMan.position.x + stick_posx,littleMan.position.y + stick_posy,light_sizex,light_sizey)
 	
 	
-	//timer start w/ 100 seconds
+	//timer start w/ 500 milliseconds
 	
 	
 		//subtracts current amount of light - currently not opperating as planed
@@ -205,6 +199,7 @@ ellipse(littleMan.position.x + stick_posx,littleMan.position.y + stick_posy,ligh
 	//console.log(light_sizex)
 	//console.log(light_sizey)
 	//currently timed so that the sunpiece and ellipse run out of light at the same time (needs to line up w/ sun pieces collected)
+
 		if ((count%50) == 0 && reduce == true && light_sizex > 0 && light_sizey > 0){
 				light_sizex -= 10
 				light_sizey -= 10
@@ -212,16 +207,32 @@ ellipse(littleMan.position.x + stick_posx,littleMan.position.y + stick_posy,ligh
 				reduce = false
 			} if ((count%5) == 0){
 				reduce = true
-			}
+		}
+		/* //I tried to make it so that as you collected more the time reduced faster but it was too buggy 
+			 //and I didn't have enought time to do it since it was a last minute idea :(
+			if ((count%50) == 0 && reduce == true && light_sizex > 0 && light_sizey > 0 && sun_left > 5){
+				light_sizex -= 10
+				light_sizey -= 10
+				sunsize -= .002
+				reduce = false
+			} else if ((count%30) == 0 && reduce == true && light_sizex > 0 && light_sizey > 0 && sun_left > 2){
+				light_sizex -= 10
+				light_sizey -= 10
+				sunsize -= .002
+				reduce = false
+				timer -= .7
+				//It reduces faster as you collect more 
+			}else if ((count%15) == 0 && reduce == true && light_sizex > 0 && light_sizey > 0){
+				light_sizex -= 10
+				light_sizey -= 10
+				sunsize -= .002
+				reduce = false
+				timer -= 1
+		}if ((count%5) == 0){
+				reduce = true
+		}
+*/
 
-	//grass
-	/*
-	fill(50,255,50,5)
-	for(var x = 0; x<width; x+=20) {
-	for(var y = 0; y<height; y+=20) {
-		rect(x, y, 20,20);
-			}}
-			*/
 	//set littleMans motion
 //littleMan.velocity.x = (moveX-littleMan.position.x)/divider;
 //littleMan.velocity.y = (moveY-littleMan.position.y)/divider;
@@ -236,19 +247,8 @@ sun.position.x = littleMan.position.x + stick_posx;
 sun.position.y = littleMan.position.y + stick_posy;
 sun.scale = sunsize
 
-	/*
- //making it glitchy - slow down when in water
-	if (littleMan.overlap(puddle) == true){
-			divider = 20
-		
-	}else{
-			divider -=1
-		if (divider<=0){
-			divider = 2
-		}}
-*/
 
-	
+	//sun pieces go away once you over lap them and time increases
 	
 	if (littleMan.overlap(sunPiece1) == true && pieceVis_1 == true){
 		sunPiece1.removed = true
@@ -523,7 +523,7 @@ sun.scale = sunsize
 	if (you_won == false && game_over == false){ //dont want to appear if the game is over 
 	textFont(font, 150);
 	fill(255)
-	text("Border!", littleMan.position.x-185, littleMan.position.y-120);
+	text("border!", littleMan.position.x-185, littleMan.position.y-120);
 	}
 			if (keyDown(' ')&& (littleMan.overlap(puddle))=== false){ //need to account for if space bar is pressed
 			moveX += 6; 
@@ -536,7 +536,7 @@ sun.scale = sunsize
 	if (you_won == false && game_over == false){ //dont want to appear if the game is over 
 	textFont(font, 150);
 	fill(255)
-	text("Border!", littleMan.position.x-185, littleMan.position.y-120);
+	text("border!", littleMan.position.x-185, littleMan.position.y-120);
 	}
 			if (keyDown(' ')&& (littleMan.overlap(puddle))=== false){
 			moveY += 6; 
@@ -549,7 +549,7 @@ sun.scale = sunsize
 	if (you_won == false && game_over == false){ //dont want to appear if the game is over 
 	textFont(font, 150);
 	fill(255)
-	text("Border!", littleMan.position.x-185, littleMan.position.y-120);
+	text("border!", littleMan.position.x-185, littleMan.position.y-120);
 	}
 			if (keyDown(' ')&& (littleMan.overlap(puddle))=== false){
 			moveX -= 6; 
@@ -562,7 +562,7 @@ sun.scale = sunsize
 	if (you_won == false && game_over == false){ //dont want to appear if the game is over 
 	textFont(font, 150);
 	fill(255)
-	text("Border!", littleMan.position.x-185, littleMan.position.y-120);
+	text("border!", littleMan.position.x-185, littleMan.position.y-120);
 	}
 			if (keyDown(' ')&& (littleMan.overlap(puddle))=== false){
 			moveY -= 6; 
@@ -613,7 +613,7 @@ if (opening2 == true){
 	textAlign(CENTER);
 	fill(255)
 	 textFont(font, 100);
-	text("Rules:", littleMan.position.x , littleMan.position.y-250);
+	text("rules:", littleMan.position.x , littleMan.position.y-250);
 	 textFont(font, 40);
 	text("move using arrow keys", littleMan.position.x , littleMan.position.y-200);
 	text("collect light by overlapping center light", littleMan.position.x , littleMan.position.y-150);
@@ -652,6 +652,7 @@ if (collected_all >= 10){
   textFont(font, 120);
 	fill(255)
 	text('you put the sun back together!', littleMan.position.x , littleMan.position.y-100);
+	//text('the world thanks you :)', littleMan.position.x , littleMan.position.y-200);
 	textFont(font, 80);
 	text('press space bar to play again', littleMan.position.x , littleMan.position.y+120);
 	light_sizex += 5
@@ -800,6 +801,36 @@ if ((game_over == true || you_won == true) && keyDown(' ') && wait >= 50 && rese
 	count = 0;
 	collected_all = 0;
 	sunsize = .02;
+
+//regenerate trees and water - for some reason becomes faster??
+puddle.removeSprites()
+	//water puddles
+for(var i = 0; i<50; i++) {
+	var water = createSprite(random(-width-SCENE_W, SCENE_W+width), random(-height-SCENE_W , SCENE_H+height), 150,150);
+	water.addImage(water_img)
+	water.scale = .5
+	water.setCollider('rectangle', 0, 0,450,450)
+	puddle.add(water);
+}
+
+sTrees.removeSprites()
+tTrees.removeSprites()	
+//added a few more trees this time~
+for(var i = 0; i<450; i++) {
+var shortTrees = createSprite(random(-width, SCENE_W+width), random(-height, SCENE_H+height), 40,70);
+	shortTrees.addImage(shortTree_img)
+	shortTrees.scale = .2
+	shortTrees.setCollider('rectangle',  0, 0, 90,150); //makes trees collidable
+	sTrees.add(shortTrees); 
+	sTrees.immovable = true;
+
+var tallTrees = createSprite(random(-width, SCENE_W+width), random(-height, SCENE_H+height), 40,110);
+	tallTrees.addImage(bigTree_img)
+	tallTrees.scale = .4
+	tallTrees.setCollider('rectangle',  0, 0, 60,200); //makes trees collidable
+	tTrees.immovable = true;
+	tTrees.add(tallTrees); 
+}
 	
 	opening = true
 }
