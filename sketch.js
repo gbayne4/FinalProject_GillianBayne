@@ -578,8 +578,8 @@ if (opening == true){
 		textAlign(CENTER);
   textFont(font, 80);
 	fill(255)
-	text("Oh no!", littleMan.position.x , littleMan.position.y-200);
-	text("The sun has broken into pieces!", littleMan.position.x , littleMan.position.y-100);
+	text("oh no!", littleMan.position.x , littleMan.position.y-200);
+	text("the sun has broken into pieces!", littleMan.position.x , littleMan.position.y-100);
 	textFont(font, 60);
 	text('press space bar to continue', littleMan.position.x , littleMan.position.y+120);
 	littleMan.changeAnimation('still')
@@ -595,8 +595,8 @@ if (opening1 == true){
 	textAlign(CENTER);
   textFont(font, 80);
 	fill(255)
-	text("Only you can put", littleMan.position.x , littleMan.position.y-200);
-	text(" the sun back together", littleMan.position.x , littleMan.position.y-100);
+	text("only you can put", littleMan.position.x , littleMan.position.y-200);
+	text("the sun back together", littleMan.position.x , littleMan.position.y-100);
 	text('collect all the light', littleMan.position.x , littleMan.position.y+120);
 	text('before your light fades away', littleMan.position.x , littleMan.position.y+220);
 	littleMan.changeAnimation('still')
